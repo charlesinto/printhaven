@@ -9,6 +9,7 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.changeColumn("Users", "role", {
+      type: Sequelize.STRING,
       defaultValue: "USER",
     });
   },
