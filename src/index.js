@@ -14,7 +14,7 @@ app.use(morgan("combined", { stream: stream }));
 (async function () {
   try {
     await sequelize.authenticate();
-    console.log("Connection has been established successfully.");
+    console.log("Connection has been established successfully!");
     app.listen(PORT, () => {
       console.log(
         `⚡️[server]: Server is running at https://localhost:${PORT}`
