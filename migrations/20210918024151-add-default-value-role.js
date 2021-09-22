@@ -21,7 +21,7 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     await queryInterface.changeColumn("User", "role", {
-      defaultValue: null,
+      defaultValue: "USER",
     });
   },
 };
