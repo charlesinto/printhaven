@@ -1,5 +1,6 @@
 import db from "../../models";
 import App from "../helpers";
+import MailService from "../service/MailService";
 
 const User = db.User;
 
@@ -23,6 +24,16 @@ class AuthController {
         phoneNumber,
         address,
       });
+
+      const mail = new MailService(
+        "support@splishpay.com",
+        email,
+        "Welcome onBoard",
+        "welcome",
+        {}
+      );
+
+      await mail.send();
 
       const token = App.assignToken({ id: user.id, email: user.email });
 
