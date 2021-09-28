@@ -68,7 +68,8 @@ class AuthController {
       const { newPassword } = req.body;
 
       const userExits = await User.findOne({ where: { id: req.user.id } });
-      if (userExits) return res.status(409).send({ message: "User not found" });
+      if (!userExits)
+        return res.status(409).send({ message: "User not found" });
 
       if (!newPassword || newPassword.trim() === "")
         return res.status(406).send({ message: "newPassword is required" });
