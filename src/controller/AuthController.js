@@ -63,6 +63,25 @@ class AuthController {
       throw new Error(error);
     }
   }
+  static async resetPassword(req, res) {
+    try {
+      const { newPassword } = req.body;
+
+      const userExits = await User.findOne({ where: { id: req.user.id } });
+      if (userExits) return res.status(409).send({ message: "User not found" });
+
+      if (!newPassword || newPassword.trim() === "")
+        return res.status(406).send({ message: "newPassword is required" });
+
+      const password = App.hashPassword(newPassword);
+
+      await User.update({ password }, { where: { id: req.user.id } });
+
+      res.status(200).send({ message: "Password updated successfully" });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default AuthController;
