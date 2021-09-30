@@ -1,5 +1,6 @@
 import db from "../../models";
 import App from "../helpers";
+import MailService from "../service/MailService";
 
 const User = db.User;
 
@@ -23,6 +24,16 @@ class AuthController {
         phoneNumber,
         address,
       });
+
+      const mail = new MailService(
+        "support@splishpay.com",
+        email,
+        "Welcome onBoard",
+        "welcome",
+        {}
+      );
+
+      await mail.send();
 
       const token = App.assignToken({ id: user.id, email: user.email });
 
@@ -52,6 +63,7 @@ class AuthController {
       throw new Error(error);
     }
   }
+<<<<<<< HEAD
 
   static async forgotPassword(req, res) {
     try {
@@ -92,6 +104,24 @@ class AuthController {
       const token = App.assignToken({ id: user.id, email: user.email });
 
       return res.status(200).send({ token, user });
+=======
+  static async resetPassword(req, res) {
+    try {
+      const { newPassword } = req.body;
+
+      const userExits = await User.findOne({ where: { id: req.user.id } });
+      if (!userExits)
+        return res.status(409).send({ message: "User not found" });
+
+      if (!newPassword || newPassword.trim() === "")
+        return res.status(406).send({ message: "newPassword is required" });
+
+      const password = App.hashPassword(newPassword);
+
+      await User.update({ password }, { where: { id: req.user.id } });
+
+      res.status(200).send({ message: "Password updated successfully" });
+>>>>>>> master
     } catch (error) {
       throw new Error(error);
     }
