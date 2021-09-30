@@ -12,10 +12,13 @@ class App {
   static generateUUID() {
     return uuidv4();
   }
-  static assignToken(payload) {
+  static assignToken(payload, expiresTime) {
     const token = jwt.sign(
       payload,
-      process.env.SECRET_KEY || "charlesisawseosome"
+      process.env.SECRET_KEY || "charlesisawseosome",
+      {
+        expiresIn: expiresTime
+      }
     );
     return token;
   }

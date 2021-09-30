@@ -9,16 +9,12 @@ router.post("/signup", handleErrorAsync(AuthController.signUp));
 
 router.post("/login", handleErrorAsync(AuthController.login));
 
-<<<<<<< HEAD
-router.put("/forgot-password", handleErrorAsync(AuthController.forgotPassword));
-router.put("/reset-password", handleErrorAsync(AuthController.resetPassword));
-
-=======
+router.put("/forgot-password", handleErrorAsync(AuthController.forgotPassword)
+);
 router.post(
   "/reset-password",
   AuthMiddleware.verifyToken,
   handleErrorAsync(AuthController.resetPassword)
 );
->>>>>>> master
 
 export default router;

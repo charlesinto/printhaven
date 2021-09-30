@@ -63,7 +63,6 @@ class AuthController {
       throw new Error(error);
     }
   }
-<<<<<<< HEAD
 
   static async forgotPassword(req, res) {
     try {
@@ -72,39 +71,29 @@ class AuthController {
       if (!user)
         return res
           .status(404)
-          .send({ message: "Wrong email/User not Exist" });
+          .send({ message: "Wrong email/User does not exist" });
 
-      if (!App.isPasswordEqual(password, user.password))
-        return res
-          .status(404)
-          .send({ message: "Wrong email/password combination" });
+      const token = App.assignToken({ id: user.id, email: user.email }, "30m");
 
-      const token = App.assignToken({ id: user.id, email: user.email });
+      const mail = new MailService(
+        "support@splishpay.com",
+        user.email,
+        "Password Recovery",
+        "resetpassword",
+        {
+          token,
+          CLIENT_URL: process.env.CLIENT_URL
+        }
+      );
+      await mail.send();
 
-      return res.status(200).send({ token, user });
+      return res.status(200).send({ message: "check your email for password reset" });
+
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  static async resetPassword(req, res) {
-    try {
-      const { email, password } = req.body;
-      const user = await User.findOne({ where: { email } });
-      if (!user)
-        return res
-          .status(404)
-          .send({ message: "Wrong email/password combination" });
-
-      if (!App.isPasswordEqual(password, user.password))
-        return res
-          .status(404)
-          .send({ message: "Wrong email/password combination" });
-
-      const token = App.assignToken({ id: user.id, email: user.email });
-
-      return res.status(200).send({ token, user });
-=======
   static async resetPassword(req, res) {
     try {
       const { newPassword } = req.body;
@@ -121,7 +110,6 @@ class AuthController {
       await User.update({ password }, { where: { id: req.user.id } });
 
       res.status(200).send({ message: "Password updated successfully" });
->>>>>>> master
     } catch (error) {
       throw new Error(error);
     }
