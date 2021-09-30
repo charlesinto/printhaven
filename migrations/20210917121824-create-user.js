@@ -5,12 +5,6 @@ const { DataTypes } = require("DataTypes/types");
 module.exports = {
   up: async (queryInterface, DataTypes) => {
     await queryInterface.createTable("Users", {
-      uuid: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV1,
-        primaryKey: false
-      },
-
       id: {
         allowNull: false,
         autoIncrement: true,

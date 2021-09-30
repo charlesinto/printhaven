@@ -8,4 +8,8 @@ router.post("/signup", handleErrorAsync(AuthController.signUp));
 
 router.post("/login", handleErrorAsync(AuthController.login));
 
+router.put("/forgot-password", handleErrorAsync(AuthController.forgotPassword));
+router.put("/reset-password", handleErrorAsync(AuthController.resetPassword));
+
+
 export default router;

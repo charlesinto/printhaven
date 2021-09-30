@@ -52,6 +52,50 @@ class AuthController {
       throw new Error(error);
     }
   }
+
+  static async forgotPassword(req, res) {
+    try {
+      const { email } = req.body;
+      const user = await User.findOne({ where: { email } });
+      if (!user)
+        return res
+          .status(404)
+          .send({ message: "Wrong email/User not Exist" });
+
+      if (!App.isPasswordEqual(password, user.password))
+        return res
+          .status(404)
+          .send({ message: "Wrong email/password combination" });
+
+      const token = App.assignToken({ id: user.id, email: user.email });
+
+      return res.status(200).send({ token, user });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  static async resetPassword(req, res) {
+    try {
+      const { email, password } = req.body;
+      const user = await User.findOne({ where: { email } });
+      if (!user)
+        return res
+          .status(404)
+          .send({ message: "Wrong email/password combination" });
+
+      if (!App.isPasswordEqual(password, user.password))
+        return res
+          .status(404)
+          .send({ message: "Wrong email/password combination" });
+
+      const token = App.assignToken({ id: user.id, email: user.email });
+
+      return res.status(200).send({ token, user });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default AuthController;
