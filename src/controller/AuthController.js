@@ -63,6 +63,37 @@ class AuthController {
       throw new Error(error);
     }
   }
+
+  static async forgotPassword(req, res) {
+    try {
+      const { email } = req.body;
+      const user = await User.findOne({ where: { email } });
+      if (!user)
+        return res
+          .status(404)
+          .send({ message: "Wrong email/User does not exist" });
+
+      const token = App.assignToken({ id: user.id, email: user.email }, "30m");
+
+      const mail = new MailService(
+        "support@splishpay.com",
+        user.email,
+        "Password Recovery",
+        "resetpassword",
+        {
+          token,
+          CLIENT_URL: process.env.CLIENT_URL
+        }
+      );
+      await mail.send();
+
+      return res.status(200).send({ message: "check your email for password reset" });
+
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   static async resetPassword(req, res) {
     try {
       const { newPassword } = req.body;

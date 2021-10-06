@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && NODE_ENV=production npm run migrate && NODE_ENV=production npm run migrate-seed && NODE_ENV=production node ./dist/index.js",
+    "start": "npm run build && SET NODE_ENV=production&& npm run migrate && SET NODE_ENV=production&& npm run migrate-seed && SET NODE_ENV=production&& node ./dist/index.js",
     "dev": "npm run migrate && nodemon --exec babel-node ./src/index.js",
     "build": "babel src -d dist",
     "migrate": "npx sequelize-cli db:migrate",
-    "migrate-seed": "NODE_ENV=production npx sequelize-cli db:seed:all",
+    "migrate-seed": "SET NODE_ENV=production&& npx sequelize-cli db:seed:all",
     "make-migration": "npx sequelize-cli migration:generate --name"
   },
   "engines": {
