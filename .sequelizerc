@@ -10,6 +10,6 @@ module.exports = {
   'config': path.resolve('./config', 'config.js'),
   'migrations-path': path.join(__dirname, './migrations'),
   'seeders-path': path.join(__dirname, './seeders'),
-  'models-path': path.resolve('./config','model')
+  'models-path': path.join(__dirname,'./models')
 
 };

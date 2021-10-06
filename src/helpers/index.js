@@ -17,7 +17,7 @@ class App {
       payload,
       process.env.SECRET_KEY || "charlesisawseosome",
       {
-        expiresIn: expiresTime
+        expiresIn: expiresTime ? expiresTime : "2h",
       }
     );
     return token;
