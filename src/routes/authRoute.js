@@ -25,11 +25,12 @@ router.post("/verify-email", handleErrorAsync(AuthController.verifyEmail));
 router.post("/login", handleErrorAsync(AuthController.login));
 
 router.put("/forgot-password", handleErrorAsync(AuthController.forgotPassword));
-// router.post(
-//   "/reset-password",
-//   AuthMiddleware.verifyToken,
-//   handleErrorAsync(AuthController.resetPassword)
-// );
+
+router
+  .route("/edit-profile")
+  .post(AuthMiddleware.verifyToken,
+    handleErrorAsync(AuthController.editProfile));
+  );
 
 router
   .route("/reset-password")

@@ -186,6 +186,23 @@ class AuthController {
       throw new Error(error);
     }
   }
+  static async editProfile(req, res) {
+    try {
+      const { email, firstName, lastName, phoneNumber } = req.body;
+
+      const userExits = await User.findOne({ where: { id: req.user.id } });
+      if (!userExits)
+        return res.status(409).send({ message: "User not found" });
+
+      await User.update({ email, firstName, lastName, phoneNumber },
+        { where: { id: req.user.id } });
+
+      res.status(200).send({ message: "profile updated successfully" });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   static async verifyPhoneNumber(req, res) {
     try {
       const { phoneNumber } = req.body;
@@ -198,6 +215,7 @@ class AuthController {
       throw new Error(error);
     }
   }
+
   static async verifyEmail(req, res) {
     try {
       const { email } = req.body;
