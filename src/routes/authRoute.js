@@ -28,8 +28,8 @@ router.put("/forgot-password", handleErrorAsync(AuthController.forgotPassword));
 
 router
   .route("/edit-profile")
-  .post(AuthMiddleware.verifyToken,
-    handleErrorAsync(AuthController.editProfile));
+  .put(AuthMiddleware.verifyToken,
+    handleErrorAsync(AuthController.editProfile)
   );
 
 router
