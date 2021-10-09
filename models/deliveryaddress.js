@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class deliveryAddress extends Model {
     /**
@@ -11,8 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      deliveryAddress.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
     }
   };
+
   deliveryAddress.init({
     firstName: {
       type: DataTypes.STRING,
@@ -44,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     isDefaultAddress: {
       type: DataTypes.BOOLEAN,
+      allowNull: false
     }
   }, {
     sequelize,
