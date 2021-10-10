@@ -31,18 +31,22 @@ router.put("/forgot-password", handleErrorAsync(AuthController.forgotPassword));
 //   handleErrorAsync(AuthController.resetPassword)
 // );
 
-router
-  .route("/reset-password")
-  .post(
-    AuthMiddleware.verifyToken,
-    handleErrorAsync(AuthController.resetPassword)
-  );
+router.post(
+  "/reset-password",
+  handleErrorAsync(AuthMiddleware.verifyToken),
+  handleErrorAsync(AuthController.resetPassword)
+);
 
-router
-  .route("/reset-password/:tokenId")
-  .post(
-    AuthMiddleware.verifyTokenByID,
-    handleErrorAsync(AuthController.resetPassword)
-  );
+router.post(
+  "/reset-password/:tokenId",
+  handleErrorAsync(AuthMiddleware.verifyTokenByID),
+  handleErrorAsync(AuthController.resetPassword)
+);
+
+router.get(
+  "/user/get-profile",
+  handleErrorAsync(AuthMiddleware.verifyToken),
+  handleErrorAsync(AuthController.getUserProfile)
+);
 
 export default router;
