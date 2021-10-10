@@ -65,7 +65,7 @@ class AuthController {
 
       const token = App.assignToken({ id: user.id, email: user.email });
 
-      res.status(201).send({ message: "Successful", user, token });
+      res.status(201).send({ message: "Successful", user: { ...user, token } });
     } catch (error) {
       throw new Error(error);
     }
@@ -128,7 +128,7 @@ class AuthController {
 
       const token = App.assignToken({ id: user.id, email: user.email });
 
-      res.status(201).send({ message: "Successful", user, token });
+      res.status(201).send({ message: "Successful", user: { ...user, token } });
     } catch (error) {
       throw new Error(error);
     }
@@ -151,7 +151,7 @@ class AuthController {
 
       const token = App.assignToken({ id: user.id, email: user.email });
 
-      return res.status(200).send({ token, user });
+      return res.status(200).send({ user: { ...user, token } });
     } catch (error) {
       throw new Error(error);
     }
@@ -179,7 +179,7 @@ class AuthController {
         role: user.role,
       });
 
-      return res.status(200).send({ token, user });
+      return res.status(200).send({ user: { ...user, token } });
     } catch (error) {
       throw new Error(error);
     }
