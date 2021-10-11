@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       ProductDesciptionValue.belongsTo(models.ProductDesciption, {
-        foreignKey: "descriptionId",
+        foreignKey: "productDesciptionId",
       });
     }
   }
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      descriptionId: {
+      productDesciptionId: {
         type: DataTypes.INTEGER,
         references: {
           // User belongsTo ParentCategory 1:1

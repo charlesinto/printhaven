@@ -13,4 +13,11 @@ router.post(
   handleErrorAsync(ProductController.createProduct)
 );
 
+router.get("/get-products", handleErrorAsync(ProductController.getProducts));
+
+router.get(
+  "/get-product/:id",
+  handleErrorAsync(ProductController.getproductByID)
+);
+
 export default router;
