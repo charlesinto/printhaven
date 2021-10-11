@@ -52,6 +52,9 @@ class ProductController {
         raw: true,
       });
 
+      if (!product)
+        return res.status(404).send({ message: "Product not found" });
+
       const extras = [];
 
       const descriptions = await ProductDesciption.findAll({
