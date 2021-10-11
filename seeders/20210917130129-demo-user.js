@@ -27,6 +27,7 @@ module.exports = {
           password: hash,
           phoneNumber: "07010671710",
           role: "SUPER ADMIN",
+          countryCode: "+234",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
