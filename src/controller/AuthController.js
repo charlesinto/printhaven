@@ -1,6 +1,7 @@
 import db from "../../models";
 import App from "../helpers";
 import MailService from "../service/MailService";
+import { Op } from "sequelize";
 
 const User = db.User;
 const AdminUser = db.AdminUser;
@@ -8,22 +9,48 @@ const AdminUser = db.AdminUser;
 class AuthController {
   static async signUp(req, res) {
     try {
-      const { firstName, lastName, password, phoneNumber, address, email } =
-        req.body;
+      const {
+        firstName,
+        lastName,
+        password,
+        phoneNumber,
+        address,
+        email,
+        countryCode,
+      } = req.body;
 
-      const userExits = await User.findOne({ where: { email, phoneNumber } });
+      if (!email || !phoneNumber || !countryCode)
+        return res.status(409).send({
+          message: "Missing Email{email}|Phonenumber{phoneNumber}|countryCode",
+        });
+
+      let newPhoneNumber = "";
+      if (phoneNumber[0] === "0") {
+        newPhoneNumber = phoneNumber.substring(1, phoneNumber.length);
+      } else {
+        newPhoneNumber = phoneNumber;
+      }
+
+      const userExits = await User.findOne({
+        where: {
+          [Op.or]: [{ phoneNumber: newPhoneNumber, countryCode }, { email }],
+        },
+      });
       if (userExits)
         return res.status(409).send({ message: "Email/Phonenumber exists" });
 
       const hashPassword = App.hashPassword(password);
+
+      console.log("countryCode: ", countryCode);
 
       const user = await User.create({
         email,
         firstName,
         lastName,
         password: hashPassword,
-        phoneNumber,
+        phoneNumber: newPhoneNumber,
         address,
+        countryCode,
       });
 
       const mail = new MailService(
@@ -38,18 +65,40 @@ class AuthController {
 
       const token = App.assignToken({ id: user.id, email: user.email });
 
-      res.status(201).send({ message: "Successful", user, token });
+      res.status(201).send({ message: "Successful", user: { ...user, token } });
     } catch (error) {
       throw new Error(error);
     }
   }
   static async createAdmin(req, res) {
     try {
-      const { firstName, lastName, password, phoneNumber, address, email } =
-        req.body;
+      const {
+        firstName,
+        lastName,
+        password,
+        phoneNumber,
+        address,
+        email,
+        countryCode,
+      } = req.body;
+
+      if (!email || !phoneNumber || !countryCode)
+        return res.status(409).send({
+          message: "Missing Email{email}|Phonenumber{phoneNumber}|countryCode",
+        });
+
+      let newPhoneNumber = "".substring;
+
+      if (phoneNumber[0] === "0") {
+        newPhoneNumber = phoneNumber.substring(1, phoneNumber.length - 1);
+      } else {
+        newPhoneNumber = phoneNumber;
+      }
 
       const userExits = await AdminUser.findOne({
-        where: { email, phoneNumber },
+        where: {
+          [Op.or]: [{ phoneNumber: newPhoneNumber, countryCode }, { email }],
+        },
       });
       if (userExits)
         return res.status(409).send({ message: "Email/Phonenumber exists" });
@@ -61,8 +110,9 @@ class AuthController {
         firstName,
         lastName,
         password: hashPassword,
-        phoneNumber,
+        phoneNumber: newPhoneNumber,
         address,
+        countryCode,
         role: "ADMIN",
       });
 
@@ -78,7 +128,7 @@ class AuthController {
 
       const token = App.assignToken({ id: user.id, email: user.email });
 
-      res.status(201).send({ message: "Successful", user, token });
+      res.status(201).send({ message: "Successful", user: { ...user, token } });
     } catch (error) {
       throw new Error(error);
     }
@@ -101,7 +151,7 @@ class AuthController {
 
       const token = App.assignToken({ id: user.id, email: user.email });
 
-      return res.status(200).send({ token, user });
+      return res.status(200).send({ user: { ...user, token } });
     } catch (error) {
       throw new Error(error);
     }
@@ -129,7 +179,7 @@ class AuthController {
         role: user.role,
       });
 
-      return res.status(200).send({ token, user });
+      return res.status(200).send({ user: { ...user, token } });
     } catch (error) {
       throw new Error(error);
     }
@@ -205,12 +255,18 @@ class AuthController {
 
   static async verifyPhoneNumber(req, res) {
     try {
-      const { phoneNumber } = req.body;
-      const userExits = await User.findOne({ where: { phoneNumber } });
-      if (userExits)
-        return res.status(409).send({ message: "Phone number Exits" });
+      const { phoneNumber, countryCode } = req.body;
+      if (!phoneNumber || !countryCode)
+        return res
+          .status(409)
+          .send({ message: "Missing Phonenumber{phoneNumber}|countryCode" });
 
-      return res.status(200).send({ message: "No such Phone number" });
+      const userExits = await User.findOne({
+        where: { phoneNumber, countryCode },
+      });
+      if (userExits) return res.status(200).send({ data: true });
+
+      return res.status(200).send({ data: false });
     } catch (error) {
       throw new Error(error);
     }
@@ -219,10 +275,28 @@ class AuthController {
   static async verifyEmail(req, res) {
     try {
       const { email } = req.body;
+      if (!email)
+        return res.status(409).send({ message: "Missing Email{email}" });
       const userExits = await User.findOne({ where: { email } });
-      if (userExits) return res.status(409).send({ message: "Email Exits" });
+      if (userExits) return res.status(200).send({ data: true });
 
-      return res.status(200).send({ message: "No such Email" });
+      return res.status(200).send({ data: false });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  static async getUserProfile(req, res) {
+    try {
+      const me = await User.findOne({
+        where: { id: req.user.id },
+        attributes: { exclude: ["password"] },
+        raw: true,
+      });
+      if (!me) return res.status(404).send({ message: "User not found" });
+
+      const { password, ...rest } = me;
+
+      return res.status(200).send({ user: { ...rest } });
     } catch (error) {
       throw new Error(error);
     }
