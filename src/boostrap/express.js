@@ -1,9 +1,5 @@
 import authRoute from "../routes/authRoute";
-<<<<<<< HEAD
 import addressRoute from "../routes/addressRoute";
-
-=======
->>>>>>> master
 import { logger } from "../logger/winston";
 
 const express = require("express");
@@ -21,11 +17,8 @@ module.exports = function () {
   app.use(bodyParser.urlencoded({ extended: false }));
 
   app.use("/api/v1/auth", authRoute);
-<<<<<<< HEAD
   app.use("/api/v1/address", addressRoute);
 
-=======
->>>>>>> master
   app.get("/", (req, res) => {
     res.send("welcome to backend");
   });
