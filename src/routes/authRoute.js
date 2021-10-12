@@ -24,7 +24,7 @@ router.post("/verify-email", handleErrorAsync(AuthController.verifyEmail));
 
 router.post("/login", handleErrorAsync(AuthController.login));
 
-router.put("/forgot-password", handleErrorAsync(AuthController.forgotPassword));
+router.post("/forgot-password", handleErrorAsync(AuthController.forgotPassword));
 
 router
   .route("/edit-profile")

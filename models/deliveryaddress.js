@@ -14,14 +14,6 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   deliveryAddress.init({
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     streetAddress: {
       type: DataTypes.STRING,
       allowNull: false,

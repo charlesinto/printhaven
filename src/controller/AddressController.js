@@ -1,23 +1,18 @@
 import db from "../../models";
 import App from "../helpers";
 
-const User = db.User;
 const deliveryAddress = db.deliveryAddress;
 
 class AddressController {
 
     static async createAddress(req, res) {
         try {
-            const { firstName, lastName, streetAddress, phoneNumber, landmark, region, city, isDefaultAddress
+            const { streetAddress, phoneNumber, landmark, region, city, isDefaultAddress
             } = req.body;
-
-            const userExits = await User.findOne({ where: { id: req.user.id } });
-            if (!userExits)
-                return res.status(409).send({ message: "User not found" });
-
+            const AddressExist = await deliveryAddress.findOne({ where: { streetAddress, userId: req.user.id } });
+            if (AddressExist)
+                return res.status(409).send({ message: "User address exist" });
             const address = await deliveryAddress.create({
-                firstName,
-                lastName,
                 streetAddress,
                 landmark,
                 phoneNumber,
@@ -36,7 +31,7 @@ class AddressController {
     static async getAllAddress(req, res) {
         try {
             const address = await deliveryAddress.findAll({ where: { userId: req.user.id } });
-            if (!address)
+            if (!address.length)
                 return res.status(409).send({ message: "User has no address records" });
             return res.status(200).send({ message: "Successful", address });
         } catch (error) {
@@ -48,7 +43,6 @@ class AddressController {
     static async getAddress(req, res) {
         try {
             const id = req.params.addressId
-
             const address = await deliveryAddress.findOne({ where: { id, userId: req.user.id } });
             if (!address)
                 return res.status(409).send({ message: "User has no such address" });
@@ -61,7 +55,7 @@ class AddressController {
     static async updateAddress(req, res) {
         try {
             const id = req.params.addressId
-            const { firstName, lastName, streetAddress, phoneNumber, landmark, region, city, isDefaultAddress
+            const { streetAddress, phoneNumber, landmark, region, city, isDefaultAddress
             } = req.body;
 
             const UserAddressExist = await deliveryAddress.findOne({ where: { id, userId: req.user.id } });
@@ -69,8 +63,6 @@ class AddressController {
                 return res.status(409).send({ message: "User has no such address" });
 
             const address = await deliveryAddress.update({
-                firstName,
-                lastName,
                 streetAddress,
                 landmark,
                 phoneNumber,
@@ -78,7 +70,7 @@ class AddressController {
                 city,
                 isDefaultAddress,
                 userId: req.user.id
-            }, { where: { id: req.user.id }, returning: true });
+            }, { where: { id, userId: req.user.id }, returning: true });
 
             return res.status(200).send({ message: "address updated Successful" });
         } catch (error) {

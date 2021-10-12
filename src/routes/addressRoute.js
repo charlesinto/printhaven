@@ -2,41 +2,41 @@ import express from "express";
 import AddressController from "../controller/AddressController";
 import { handleErrorAsync } from "../middleware/ErrorHandler";
 import AuthMiddleware from "../middleware/AuthMiddleware";
+import { deliveryAddresSchemaValidate } from "../middleware/schemaValidations";
+
 
 const addressRouter = express.Router();
 
-addressRouter
-    .route("/index/:addressId")
-    .get(handleErrorAsync(AuthMiddleware.verifyToken),
-        handleErrorAsync(AddressController.getAddress)
-    );
+addressRouter.get(
+    "/index/:addressId",
+    handleErrorAsync(AuthMiddleware.verifyToken),
+    handleErrorAsync(AddressController.getAddress)
+);
 
-addressRouter
-    .route("/index")
-    .get(
-        handleErrorAsync(AuthMiddleware.verifyToken),
-        handleErrorAsync(AddressController.getAllAddress)
-    );
+addressRouter.get(
+    "/index",
+    handleErrorAsync(AuthMiddleware.verifyToken),
+    handleErrorAsync(AddressController.getAllAddress)
+);
 
-addressRouter
-    .route("/create")
-    .post(
-        handleErrorAsync(AuthMiddleware.verifyToken),
-        handleErrorAsync(AddressController.createAddress)
-    );
+addressRouter.post(
+    "/create",
+    handleErrorAsync(AuthMiddleware.verifyToken),
+    handleErrorAsync(deliveryAddresSchemaValidate),
+    handleErrorAsync(AddressController.createAddress)
+);
 
-addressRouter
-    .route("/index/:addressId")
-    .put(
-        handleErrorAsync(AuthMiddleware.verifyToken),
-        handleErrorAsync(AddressController.updateAddress)
-    );
+addressRouter.put(
+    "/index/:addressId",
+    handleErrorAsync(AuthMiddleware.verifyToken),
+    handleErrorAsync(deliveryAddresSchemaValidate),
+    handleErrorAsync(AddressController.updateAddress)
+);
 
-addressRouter
-    .route("/index/:addressId")
-    .delete(
-        handleErrorAsync(AuthMiddleware.verifyToken),
-        handleErrorAsync(AddressController.deleteAddress)
-    );
+addressRouter.delete(
+    "/index/:addressId",
+    handleErrorAsync(AuthMiddleware.verifyToken),
+    handleErrorAsync(AddressController.deleteAddress)
+);
 
 export default addressRouter;
