@@ -43,15 +43,18 @@ class AuthController {
 
       console.log("countryCode: ", countryCode);
 
-      const user = await User.create({
-        email,
-        firstName,
-        lastName,
-        password: hashPassword,
-        phoneNumber: newPhoneNumber,
-        address,
-        countryCode,
-      });
+      const user = await User.create(
+        {
+          email,
+          firstName,
+          lastName,
+          password: hashPassword,
+          phoneNumber: newPhoneNumber,
+          address,
+          countryCode,
+        },
+        { raw: true }
+      );
 
       const mail = new MailService(
         "support@splishpay.com",
@@ -105,16 +108,19 @@ class AuthController {
 
       const hashPassword = App.hashPassword(password);
 
-      const user = await AdminUser.create({
-        email,
-        firstName,
-        lastName,
-        password: hashPassword,
-        phoneNumber: newPhoneNumber,
-        address,
-        countryCode,
-        role: "ADMIN",
-      });
+      const user = await AdminUser.create(
+        {
+          email,
+          firstName,
+          lastName,
+          password: hashPassword,
+          phoneNumber: newPhoneNumber,
+          address,
+          countryCode,
+          role: "ADMIN",
+        },
+        { raw: true }
+      );
 
       const mail = new MailService(
         "support@splishpay.com",
@@ -138,6 +144,7 @@ class AuthController {
       const { email, password } = req.body;
       const user = await User.findOne({
         where: { email },
+        raw: true,
       });
       if (!user)
         return res
@@ -162,6 +169,7 @@ class AuthController {
       const { email, password } = req.body;
       const user = await AdminUser.findOne({
         where: { email },
+        raw: true,
       });
       if (!user)
         return res

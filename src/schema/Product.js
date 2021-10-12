@@ -9,7 +9,7 @@ export const ProductSchema = Joi.object({
   stockCount: Joi.number().required(),
   shippingType: Joi.string().required(),
   customizationType: Joi.string().required(),
-  subCatgoryId: Joi.number().required(),
+  subCategoryId: Joi.number().required(),
   mainImageUrl: Joi.string().required(),
   thumbNailUrl: Joi.string(),
   otherImageUrl1: Joi.string(),
