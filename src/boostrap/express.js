@@ -17,7 +17,7 @@ module.exports = function () {
   app.use(bodyParser.urlencoded({ extended: false }));
 
   app.use("/api/v1/auth", authRoute);
-  app.use("/api/v1/address", addressRoute);
+  app.use("/api/v1/account", addressRoute);
 
   app.get("/", (req, res) => {
     res.send("welcome to backend");

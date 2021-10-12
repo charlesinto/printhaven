@@ -8,13 +8,13 @@ import { deliveryAddresSchemaValidate } from "../middleware/schemaValidations";
 const addressRouter = express.Router();
 
 addressRouter.get(
-    "/index/:addressId",
+    "/delivery-addresses/:addressId",
     handleErrorAsync(AuthMiddleware.verifyToken),
     handleErrorAsync(AddressController.getAddress)
 );
 
 addressRouter.get(
-    "/index",
+    "/delivery-addresses",
     handleErrorAsync(AuthMiddleware.verifyToken),
     handleErrorAsync(AddressController.getAllAddress)
 );
@@ -27,14 +27,14 @@ addressRouter.post(
 );
 
 addressRouter.put(
-    "/index/:addressId",
+    "/delivery-addresses/:addressId",
     handleErrorAsync(AuthMiddleware.verifyToken),
     handleErrorAsync(deliveryAddresSchemaValidate),
     handleErrorAsync(AddressController.updateAddress)
 );
 
 addressRouter.delete(
-    "/index/:addressId",
+    "/delivery-addresses/:addressId",
     handleErrorAsync(AuthMiddleware.verifyToken),
     handleErrorAsync(AddressController.deleteAddress)
 );
