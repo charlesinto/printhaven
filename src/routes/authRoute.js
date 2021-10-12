@@ -2,6 +2,8 @@ import express from "express";
 import AuthController from "../controller/AuthController";
 import { handleErrorAsync } from "../middleware/ErrorHandler";
 import AuthMiddleware from "../middleware/AuthMiddleware";
+import { editProfileValidate } from "../middleware/schemaValidations";
+
 
 const router = express.Router();
 
@@ -26,11 +28,12 @@ router.post("/login", handleErrorAsync(AuthController.login));
 
 router.post("/forgot-password", handleErrorAsync(AuthController.forgotPassword));
 
-router
-  .route("/edit-profile")
-  .put(AuthMiddleware.verifyToken,
-    handleErrorAsync(AuthController.editProfile)
-  );
+router.put(
+  "/edit-profile",
+  AuthMiddleware.verifyToken,
+  handleErrorAsync(editProfileValidate),
+  handleErrorAsync(AuthController.editProfile)
+);
 
 router.post(
   "/reset-password",

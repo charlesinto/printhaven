@@ -8,6 +8,10 @@ class AuthMiddleWare {
     try {
       const token = req.headers["authorization"];
       // const token = req.headers.authorization.split(' ')[1]
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
       if (!token)
         return res.status(406).send({ message: "Authorization failed1" });
       const user = await App.decodeToken(token);
