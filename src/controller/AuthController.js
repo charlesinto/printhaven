@@ -248,10 +248,6 @@ class AuthController {
     try {
       const { email, firstName, lastName, phoneNumber } = req.body;
 
-      const userExits = await User.findOne({ where: { id: req.user.id } });
-      if (!userExits)
-        return res.status(409).send({ message: "User not found" });
-
       await User.update({ email, firstName, lastName, phoneNumber },
         { where: { id: req.user.id } });
 
