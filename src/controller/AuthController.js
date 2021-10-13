@@ -43,18 +43,15 @@ class AuthController {
 
       console.log("countryCode: ", countryCode);
 
-      const user = await User.create(
-        {
-          email,
-          firstName,
-          lastName,
-          password: hashPassword,
-          phoneNumber: newPhoneNumber,
-          address,
-          countryCode,
-        },
-        { raw: true }
-      );
+      const user = await User.create({
+        email,
+        firstName,
+        lastName,
+        password: hashPassword,
+        phoneNumber: newPhoneNumber,
+        address,
+        countryCode,
+      });
 
       const mail = new MailService(
         "support@splishpay.com",
@@ -108,19 +105,16 @@ class AuthController {
 
       const hashPassword = App.hashPassword(password);
 
-      const user = await AdminUser.create(
-        {
-          email,
-          firstName,
-          lastName,
-          password: hashPassword,
-          phoneNumber: newPhoneNumber,
-          address,
-          countryCode,
-          role: "ADMIN",
-        },
-        { raw: true }
-      );
+      const user = await AdminUser.create({
+        email,
+        firstName,
+        lastName,
+        password: hashPassword,
+        phoneNumber: newPhoneNumber,
+        address,
+        countryCode,
+        role: "ADMIN",
+      });
 
       const mail = new MailService(
         "support@splishpay.com",
@@ -144,7 +138,6 @@ class AuthController {
       const { email, password } = req.body;
       const user = await User.findOne({
         where: { email },
-        raw: true,
       });
       if (!user)
         return res
@@ -169,7 +162,6 @@ class AuthController {
       const { email, password } = req.body;
       const user = await AdminUser.findOne({
         where: { email },
-        raw: true,
       });
       if (!user)
         return res
@@ -247,7 +239,6 @@ class AuthController {
   static async editProfile(req, res) {
     try {
       const { email, firstName, lastName, phoneNumber } = req.body;
-
       await User.update({ email, firstName, lastName, phoneNumber },
         { where: { id: req.user.id } });
 
