@@ -35,7 +35,6 @@ class AuthController {
         where: {
           [Op.or]: [{ phoneNumber: newPhoneNumber, countryCode }, { email }],
         },
-        raw: true,
       });
       if (userExits)
         return res.status(409).send({ message: "Email/Phonenumber exists" });
@@ -44,15 +43,18 @@ class AuthController {
 
       console.log("countryCode: ", countryCode);
 
-      const user = await User.create({
-        email,
-        firstName,
-        lastName,
-        password: hashPassword,
-        phoneNumber: newPhoneNumber,
-        address,
-        countryCode,
-      });
+      const user = await User.create(
+        {
+          email,
+          firstName,
+          lastName,
+          password: hashPassword,
+          phoneNumber: newPhoneNumber,
+          address,
+          countryCode,
+        },
+        { raw: true }
+      );
 
       const mail = new MailService(
         "support@splishpay.com",
@@ -100,7 +102,6 @@ class AuthController {
         where: {
           [Op.or]: [{ phoneNumber: newPhoneNumber, countryCode }, { email }],
         },
-        raw: true,
       });
       if (userExits)
         return res.status(409).send({ message: "Email/Phonenumber exists" });
@@ -195,7 +196,7 @@ class AuthController {
   static async forgotPassword(req, res) {
     try {
       const { email } = req.body;
-      const user = await User.findOne({ where: { email }, raw: true });
+      const user = await User.findOne({ where: { email } });
       if (!user)
         return res
           .status(404)
@@ -227,10 +228,7 @@ class AuthController {
     try {
       const { newPassword } = req.body;
 
-      const userExits = await User.findOne({
-        where: { id: req.user.id },
-        raw: true,
-      });
+      const userExits = await User.findOne({ where: { id: req.user.id } });
       if (!userExits)
         return res.status(409).send({ message: "User not found" });
 
@@ -249,10 +247,9 @@ class AuthController {
   static async editProfile(req, res) {
     try {
       const { email, firstName, lastName, phoneNumber } = req.body;
-      await User.update(
-        { email, firstName, lastName, phoneNumber },
-        { where: { id: req.user.id } }
-      );
+
+      await User.update({ email, firstName, lastName, phoneNumber },
+        { where: { id: req.user.id } });
 
       res.status(200).send({ message: "profile updated successfully" });
     } catch (error) {

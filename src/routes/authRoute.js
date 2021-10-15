@@ -35,6 +35,11 @@ router.put(
   handleErrorAsync(AuthController.editProfile)
 );
 
+router.post("/verify-token/:tokenId",
+  handleErrorAsync(AuthMiddleware.verifyTokenByID),
+  handleErrorAsync(AuthController.getUserProfile)
+);
+
 router.post(
   "/reset-password",
   handleErrorAsync(AuthMiddleware.verifyToken),
