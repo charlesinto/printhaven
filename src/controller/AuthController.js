@@ -35,6 +35,7 @@ class AuthController {
         where: {
           [Op.or]: [{ phoneNumber: newPhoneNumber, countryCode }, { email }],
         },
+        raw: true,
       });
       if (userExits)
         return res.status(409).send({ message: "Email/Phonenumber exists" });
@@ -248,8 +249,10 @@ class AuthController {
     try {
       const { email, firstName, lastName, phoneNumber } = req.body;
 
-      await User.update({ email, firstName, lastName, phoneNumber },
-        { where: { id: req.user.id } });
+      await User.update(
+        { email, firstName, lastName, phoneNumber },
+        { where: { id: req.user.id } }
+      );
 
       res.status(200).send({ message: "profile updated successfully" });
     } catch (error) {
