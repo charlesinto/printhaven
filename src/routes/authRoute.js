@@ -40,7 +40,7 @@ router.put(
 router.get(
   "/verify-token/:tokenId",
   handleErrorAsync(AuthMiddleware.verifyTokenByID),
-  handleErrorAsync(AuthController.getUserProfile)
+  handleErrorAsync(AuthController.getUserName)
 );
 
 router.post(

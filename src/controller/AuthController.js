@@ -308,6 +308,25 @@ class AuthController {
       throw new Error(error);
     }
   }
+
+  static async getUserName(req, res) {
+    try {
+      const me = await User.findOne({
+        where: { id: req.user.id },
+        attributes: { exclude: ["password"] },
+        raw: true,
+      });
+      if (!me) return res.status(404).send({ message: "User not found" });
+
+      const { password, ...rest } = me;
+
+      return res
+        .status(200)
+        .send({ user: { firstName: me.firstName, lastName: me.lastName } });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
 
 export default AuthController;
