@@ -4,7 +4,6 @@ import { handleErrorAsync } from "../middleware/ErrorHandler";
 import AuthMiddleware from "../middleware/AuthMiddleware";
 import { editProfileValidate } from "../middleware/schemaValidations";
 
-
 const router = express.Router();
 
 router.post("/signup", handleErrorAsync(AuthController.signUp));
@@ -26,7 +25,10 @@ router.post("/verify-email", handleErrorAsync(AuthController.verifyEmail));
 
 router.post("/login", handleErrorAsync(AuthController.login));
 
-router.post("/forgot-password", handleErrorAsync(AuthController.forgotPassword));
+router.post(
+  "/forgot-password",
+  handleErrorAsync(AuthController.forgotPassword)
+);
 
 router.put(
   "/edit-profile",
@@ -35,7 +37,8 @@ router.put(
   handleErrorAsync(AuthController.editProfile)
 );
 
-router.post("/verify-token/:tokenId",
+router.get(
+  "/verify-token/:tokenId",
   handleErrorAsync(AuthMiddleware.verifyTokenByID),
   handleErrorAsync(AuthController.getUserProfile)
 );
