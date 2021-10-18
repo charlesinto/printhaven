@@ -245,6 +245,29 @@ class AuthController {
       throw new Error(error);
     }
   }
+
+  static async changePassword(req, res) {
+    try {
+      const { oldPassword, newPassword } = req.body;
+      const user = await User.findOne({
+        where: { id: req.user.id },
+        raw: true,
+      });
+
+      if (!App.isPasswordEqual(oldPassword, user.password))
+        return res
+          .status(404)
+          .send({ message: "invalid old password" });
+
+      const password = App.hashPassword(newPassword);
+      await User.update({ password }, { where: { id: req.user.id } });
+      res.status(200).send({ message: "Password updated successfully" });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+
   static async editProfile(req, res) {
     try {
       const { email, firstName, lastName, phoneNumber } = req.body;

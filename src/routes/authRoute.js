@@ -2,7 +2,7 @@ import express from "express";
 import AuthController from "../controller/AuthController";
 import { handleErrorAsync } from "../middleware/ErrorHandler";
 import AuthMiddleware from "../middleware/AuthMiddleware";
-import { editProfileValidate } from "../middleware/schemaValidations";
+import { changePasswordSchemaValidate, editProfileValidate } from "../middleware/schemaValidations";
 
 const router = express.Router();
 
@@ -59,6 +59,13 @@ router.get(
   "/user/get-profile",
   handleErrorAsync(AuthMiddleware.verifyToken),
   handleErrorAsync(AuthController.getUserProfile)
+);
+
+router.post(
+  "/change-password",
+  handleErrorAsync(AuthMiddleware.verifyToken),
+  handleErrorAsync(changePasswordSchemaValidate),
+  handleErrorAsync(AuthController.changePassword)
 );
 
 export default router;
