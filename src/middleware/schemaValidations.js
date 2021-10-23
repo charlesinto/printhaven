@@ -8,7 +8,6 @@ import { editProfileSchema } from "../schema/editProfile";
 import { homePageBannerSchema } from "../schema/homePageBanner";
 import { changePasswordSchema } from "../schema/changePassword";
 
-
 export const ProductSchemaValidate = (req, res, next) => {
   try {
     const { error, value } = ProductSchema.validate(req.body);
@@ -57,11 +56,17 @@ export const homePageBannerSchemaValidate = (req, res, next) => {
   }
 };
 
-<<<<<<< HEAD
 export const changePasswordSchemaValidate = (req, res, next) => {
   try {
     const { error, value } = changePasswordSchema.validate(req.body);
-=======
+    if (error)
+      return res.status(409).send({ message: "Validation failed", error });
+
+    return next();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 export const regionSchemaValidate = (req, res, next) => {
   try {
     const { error, value } = RegionSchema.validate(req.body);
@@ -77,7 +82,6 @@ export const regionSchemaValidate = (req, res, next) => {
 export const citySchemaValidate = (req, res, next) => {
   try {
     const { error, value } = CitySchema.validate(req.body);
->>>>>>> 5416e3c74ec8973001248f23abe3a899a13787e9
     if (error)
       return res.status(409).send({ message: "Validation failed", error });
 
