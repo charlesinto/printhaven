@@ -1,5 +1,9 @@
 import { ProductSchema } from "../schema/Product";
-import { deliveryAddressSchema } from "../schema/deliveryAddress";
+import {
+  CitySchema,
+  deliveryAddressSchema,
+  RegionSchema,
+} from "../schema/deliveryAddress";
 import { editProfileSchema } from "../schema/editProfile";
 import { homePageBannerSchema } from "../schema/homePageBanner";
 
@@ -42,6 +46,30 @@ export const editProfileValidate = (req, res, next) => {
 export const homePageBannerSchemaValidate = (req, res, next) => {
   try {
     const { error, value } = homePageBannerSchema.validate(req.body);
+    if (error)
+      return res.status(409).send({ message: "Validation failed", error });
+
+    return next();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const regionSchemaValidate = (req, res, next) => {
+  try {
+    const { error, value } = RegionSchema.validate(req.body);
+    if (error)
+      return res.status(409).send({ message: "Validation failed", error });
+
+    return next();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const citySchemaValidate = (req, res, next) => {
+  try {
+    const { error, value } = CitySchema.validate(req.body);
     if (error)
       return res.status(409).send({ message: "Validation failed", error });
 
