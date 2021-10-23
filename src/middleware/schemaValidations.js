@@ -9,7 +9,6 @@ import { homePageBannerSchema } from "../schema/homePageBanner";
 import { wishListSchema } from "../schema/wishList";
 import { changePasswordSchema } from "../schema/changePassword";
 
-
 export const ProductSchemaValidate = (req, res, next) => {
   try {
     const { error, value } = ProductSchema.validate(req.body);
