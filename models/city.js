@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class HomePageBanner extends Model {
+  class City extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,34 +9,33 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      HomePageBanner.hasMany(models.HomePageBannerImages, {
-        as: "images",
-      });
-      HomePageBanner.belongsTo(models.ParentCategory, {
-        foreignKey: "parentCategoryId",
-        as: "linkToCategory",
-      });
+      City.belongsTo(models.Region, { foreignKey: "regionId" });
     }
   }
-  HomePageBanner.init(
+  City.init(
     {
-      banner: {
+      name: {
         type: DataTypes.STRING,
         unique: true,
         allowNull: false,
       },
-      parentCategoryId: {
+      isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
+      regionId: {
         type: DataTypes.INTEGER,
         references: {
-          model: "ParentCategory",
+          // User belongsTo ParentCategory 1:1
+          model: "Region",
           key: "id",
         },
       },
     },
     {
       sequelize,
-      modelName: "HomePageBanner",
+      modelName: "City",
     }
   );
-  return HomePageBanner;
+  return City;
 };
