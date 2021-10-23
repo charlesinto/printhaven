@@ -350,6 +350,35 @@ class AuthController {
       throw new Error(error);
     }
   }
+
+  static async contactUs(req, res) {
+    try {
+      const { name, email, subject, description } = req.body;
+
+      const mail = new MailService(
+        email,
+        process.env.ADMIN_CONTACT_US_EMAIL,
+        subject,
+        "contactus",
+        {
+          name,
+          description,
+          email,
+        }
+      );
+      await mail.send();
+
+      return res
+        .status(200)
+        .send({ message: "emal sent successfully to support center" });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
 }
+
+
+
 
 export default AuthController;
