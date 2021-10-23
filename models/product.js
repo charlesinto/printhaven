@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       Product.belongsTo(models.SubCategory, {
         foreignKey: { name: "subCategoryId" },
       });
+      Product.hasMany(models.wishList, {
+        foreignKey: "productId"
+      });
+
     }
   }
   Product.init(

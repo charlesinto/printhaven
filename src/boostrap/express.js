@@ -3,6 +3,7 @@ import addressRoute from "../routes/addressRoute";
 import productRoute from "../routes/productRoute";
 import categoryRoute from "../routes/categoryRoute";
 import advertRoute from "../routes/advertRoute";
+import wishListRoute from "../routes/wishListRoute";
 import deliveryRoute from "../routes/deliveryRoute";
 import { logger } from "../logger/winston";
 
@@ -25,6 +26,7 @@ module.exports = function () {
   app.use("/api/v1/product", productRoute);
   app.use("/api/v1/category", categoryRoute);
   app.use("/api/v1/advert", advertRoute);
+  app.use("/api/v1/wishlist", wishListRoute);
   app.use("/api/v1/delivery", deliveryRoute);
 
   app.get("/", (req, res) => {

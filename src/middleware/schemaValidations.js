@@ -6,6 +6,7 @@ import {
 } from "../schema/deliveryAddress";
 import { editProfileSchema } from "../schema/editProfile";
 import { homePageBannerSchema } from "../schema/homePageBanner";
+import { wishListSchema } from "../schema/wishList";
 import { changePasswordSchema } from "../schema/changePassword";
 
 export const ProductSchemaValidate = (req, res, next) => {
@@ -56,6 +57,19 @@ export const homePageBannerSchemaValidate = (req, res, next) => {
   }
 };
 
+
+export const wishListSchemaValidate = (req, res, next) => {
+  try {
+    const { error, value } = wishListSchema.validate(req.body);
+    if (error)
+      return res.status(409).send({ message: "Validation failed", error });
+
+    return next();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 export const changePasswordSchemaValidate = (req, res, next) => {
   try {
     const { error, value } = changePasswordSchema.validate(req.body);
@@ -67,6 +81,7 @@ export const changePasswordSchemaValidate = (req, res, next) => {
     throw new Error(error);
   }
 };
+
 export const regionSchemaValidate = (req, res, next) => {
   try {
     const { error, value } = RegionSchema.validate(req.body);
@@ -89,4 +104,4 @@ export const citySchemaValidate = (req, res, next) => {
   } catch (error) {
     throw new Error(error);
   }
-};
+}
