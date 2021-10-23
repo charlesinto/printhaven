@@ -1,7 +1,7 @@
 import db from "../../models";
 import App from "../helpers";
 
-const { HomePageBanner, HomePageBannerImages } = db;
+const { HomePageBanner, HomePageBannerImages, ParentCategory } = db;
 
 class AdvertController {
   static async createHomePageBanner(req, res) {
@@ -36,9 +36,18 @@ class AdvertController {
   static async getHomePageBanners(req, res) {
     try {
       const banners = await HomePageBanner.findAll({
-        include: "bannerImages",
+        include: [
+          {
+            model: HomePageBannerImages,
+            as: "images",
+          },
+          {
+            model: ParentCategory,
+            as: "linkToCategory",
+          },
+        ],
         attributes: {
-          include: ["id", ["parentCategoryId", "linkToCategory"]],
+          include: ["id"],
           exclude: ["ParentCategoryId", "parentCategoryId"],
         },
       });

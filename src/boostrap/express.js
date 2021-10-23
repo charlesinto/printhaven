@@ -3,7 +3,11 @@ import addressRoute from "../routes/addressRoute";
 import productRoute from "../routes/productRoute";
 import categoryRoute from "../routes/categoryRoute";
 import advertRoute from "../routes/advertRoute";
+<<<<<<< HEAD
 import wishListRoute from "../routes/wishListRoute";
+=======
+import deliveryRoute from "../routes/deliveryRoute";
+>>>>>>> 5416e3c74ec8973001248f23abe3a899a13787e9
 import { logger } from "../logger/winston";
 
 const express = require("express");
@@ -25,8 +29,12 @@ module.exports = function () {
   app.use("/api/v1/product", productRoute);
   app.use("/api/v1/category", categoryRoute);
   app.use("/api/v1/advert", advertRoute);
+<<<<<<< HEAD
   app.use("/api/v1/wishlist", wishListRoute);
 
+=======
+  app.use("/api/v1/delivery", deliveryRoute);
+>>>>>>> 5416e3c74ec8973001248f23abe3a899a13787e9
 
   app.get("/", (req, res) => {
     res.send("welcome to backend");
