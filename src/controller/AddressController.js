@@ -7,18 +7,21 @@ class AddressController {
 
     static async createAddress(req, res) {
         try {
-            const { streetAddress, phoneNumber, landmark, region, city, isDefaultAddress
-            } = req.body;
-            const AddressExist = await deliveryAddress.findOne({ where: { streetAddress, userId: req.user.id } });
+            const { phoneNumber, streetAddress, ...rest } = req.body;
+
+            let newPhoneNumber = (phoneNumber[0] === "0") ? phoneNumber.substring(1, phoneNumber.length) : phoneNumber;
+            const AddressExist = await deliveryAddress.findOne({
+                where: {
+                    streetAddress,
+                    userId: req.user.id
+                }
+            });
             if (AddressExist)
                 return res.status(409).send({ message: "User address exist" });
             const address = await deliveryAddress.create({
                 streetAddress,
-                landmark,
-                phoneNumber,
-                region,
-                city,
-                isDefaultAddress,
+                phoneNumber: newPhoneNumber,
+                ...rest,
                 userId: req.user.id
             });
 
@@ -55,20 +58,16 @@ class AddressController {
     static async updateAddress(req, res) {
         try {
             const id = req.params.addressId
-            const { streetAddress, phoneNumber, landmark, region, city, isDefaultAddress
-            } = req.body;
+            const { phoneNumber, ...rest } = req.body;
+            let newPhoneNumber = (phoneNumber[0] === "0") ? phoneNumber.substring(1, phoneNumber.length) : phoneNumber;
 
             const UserAddressExist = await deliveryAddress.findOne({ where: { id, userId: req.user.id } });
             if (!UserAddressExist)
                 return res.status(409).send({ message: "User has no such address" });
 
             const address = await deliveryAddress.update({
-                streetAddress,
-                landmark,
-                phoneNumber,
-                region,
-                city,
-                isDefaultAddress,
+                phoneNumber: newPhoneNumber,
+                ...rest,
                 userId: req.user.id
             }, { where: { id, userId: req.user.id }, returning: true });
 

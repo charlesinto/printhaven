@@ -4,8 +4,11 @@ export const deliveryAddressSchema = Joi.object({
   streetAddress: Joi.string().required(),
   phoneNumber: Joi.number().required(),
   landmark: Joi.string().required(),
-  region: Joi.string(),
-  city: Joi.string(),
+  region: Joi.string().required(),
+  city: Joi.string().required(),
+  lastName: Joi.string().required(),
+  firstName: Joi.string().required(),
+  countryCode: Joi.string().required(),
   isDefaultAddress: Joi.boolean().required(),
 });
 
