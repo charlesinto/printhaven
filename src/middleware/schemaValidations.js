@@ -8,6 +8,8 @@ import { editProfileSchema } from "../schema/editProfile";
 import { homePageBannerSchema } from "../schema/homePageBanner";
 import { wishListSchema } from "../schema/wishList";
 import { changePasswordSchema } from "../schema/changePassword";
+import { contactUsSchema } from "../schema/contactUs";
+
 
 export const ProductSchemaValidate = (req, res, next) => {
   try {
@@ -97,6 +99,18 @@ export const regionSchemaValidate = (req, res, next) => {
 export const citySchemaValidate = (req, res, next) => {
   try {
     const { error, value } = CitySchema.validate(req.body);
+    if (error)
+      return res.status(409).send({ message: "Validation failed", error });
+
+    return next();
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export const contactUsSchemaValidate = (req, res, next) => {
+  try {
+    const { error, value } = contactUsSchema.validate(req.body);
     if (error)
       return res.status(409).send({ message: "Validation failed", error });
 

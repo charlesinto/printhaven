@@ -5,6 +5,8 @@ import categoryRoute from "../routes/categoryRoute";
 import advertRoute from "../routes/advertRoute";
 import wishListRoute from "../routes/wishListRoute";
 import deliveryRoute from "../routes/deliveryRoute";
+import helpRoute from "../routes/helpRoute";
+
 import { logger } from "../logger/winston";
 
 const express = require("express");
@@ -28,6 +30,8 @@ module.exports = function () {
   app.use("/api/v1/advert", advertRoute);
   app.use("/api/v1/wishlist", wishListRoute);
   app.use("/api/v1/delivery", deliveryRoute);
+  app.use("/api/v1/help", helpRoute);
+
 
   app.get("/", (req, res) => {
     res.send("welcome to backend");

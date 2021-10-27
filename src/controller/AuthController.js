@@ -350,6 +350,10 @@ class AuthController {
       throw new Error(error);
     }
   }
+
 }
+
+
+
 
 export default AuthController;
