@@ -3,7 +3,13 @@ import App from "../helpers";
 import MailService from "../service/MailService";
 import { Op } from "sequelize";
 
-const { Product, ProductDesciption, ProductDesciptionValue, SubCategory } = db;
+const {
+  Product,
+  ProductDesciption,
+  ProductDesciptionValue,
+  SubCategory,
+  BestsellingProduct,
+} = db;
 
 class ProductController {
   static async createProduct(req, res) {
@@ -41,6 +47,51 @@ class ProductController {
       const products = await Product.findAll();
 
       return res.status(200).send({ data: products });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  static async addProductToBestSelling(req, res) {
+    try {
+      const payload = req.body;
+      const uniqueProducts = [];
+      for (let i = 0; i < payload.length; i++) {
+        const product = await BestsellingProduct.findOne({
+          where: { productId: payload[i] },
+        });
+        if (!product) uniqueProducts.push(payload[i]);
+      }
+      const productIds = uniqueProducts.map((id) => ({ productId: id }));
+
+      await BestsellingProduct.bulkCreate(productIds);
+
+      res.status(200).send({ message: "Operation successful" });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  static async removeProductFromBestSelling(req, res) {
+    try {
+      const payload = req.body;
+
+      for (let i = 0; i < payload.length; i++) {
+        await BestsellingProduct.destroy({ where: { productId: payload[i] } });
+      }
+      res.status(200).send({ message: "Operation successful" });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  static async getBestSellingProducts(req, res) {
+    try {
+      const bestsellingProducts = await BestsellingProduct.findAll({
+        include: [{ model: Product, as: "product" }],
+      });
+      res
+        .status(200)
+        .send({ message: "Operation successful", data: bestsellingProducts });
     } catch (error) {
       throw new Error(error);
     }

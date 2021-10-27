@@ -24,3 +24,5 @@ export const ProductSchema = Joi.object({
     })
   ),
 });
+
+export const BestSellingProductSchema = Joi.array().items(Joi.number());

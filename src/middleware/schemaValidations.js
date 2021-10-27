@@ -1,4 +1,4 @@
-import { ProductSchema } from "../schema/Product";
+import { BestSellingProductSchema, ProductSchema } from "../schema/Product";
 import {
   CitySchema,
   deliveryAddressSchema,
@@ -9,7 +9,6 @@ import { homePageBannerSchema } from "../schema/homePageBanner";
 import { wishListSchema } from "../schema/wishList";
 import { changePasswordSchema } from "../schema/changePassword";
 import { contactUsSchema } from "../schema/contactUs";
-
 
 export const ProductSchemaValidate = (req, res, next) => {
   try {
@@ -59,7 +58,6 @@ export const homePageBannerSchemaValidate = (req, res, next) => {
   }
 };
 
-
 export const wishListSchemaValidate = (req, res, next) => {
   try {
     const { error, value } = wishListSchema.validate(req.body);
@@ -106,7 +104,7 @@ export const citySchemaValidate = (req, res, next) => {
   } catch (error) {
     throw new Error(error);
   }
-}
+};
 
 export const contactUsSchemaValidate = (req, res, next) => {
   try {
@@ -118,4 +116,16 @@ export const contactUsSchemaValidate = (req, res, next) => {
   } catch (error) {
     throw new Error(error);
   }
-}
+};
+
+export const bestSellingProductSchemaValidate = (req, res, next) => {
+  try {
+    const { error, value } = BestSellingProductSchema.validate(req.body);
+    if (error)
+      return res.status(409).send({ message: "Validation failed", error });
+
+    return next();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
