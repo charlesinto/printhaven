@@ -270,10 +270,12 @@ class AuthController {
 
   static async editProfile(req, res) {
     try {
-      const { email, firstName, lastName, phoneNumber } = req.body;
 
+      const { phoneNumber, ...rest } = req.body;
+
+      let newPhoneNumber = (phoneNumber[0] === "0") ? phoneNumber.substring(1, phoneNumber.length) : phoneNumber;
       await User.update(
-        { email, firstName, lastName, phoneNumber },
+        { phoneNumber: newPhoneNumber, ...rest },
         { where: { id: req.user.id } }
       );
 

@@ -5,4 +5,5 @@ export const editProfileSchema = Joi.object({
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
     phoneNumber: Joi.number().required(),
+    countryCode: Joi.string().required()
 });
