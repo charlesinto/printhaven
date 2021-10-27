@@ -8,12 +8,12 @@ class AuthMiddleWare {
     try {
       const token = req.headers["authorization"];
       if (!token)
-        return res.status(406).send({ message: "Authorization failed1" });
+        return res.status(406).send({ message: "Authorization failed" });
       const user = await App.decodeToken(token);
       req.user = user;
       next();
     } catch (error) {
-      res.status(406).send({ message: "Authorization failed2" });
+      res.status(406).send({ message: "Authorization failed" });
     }
   }
 
