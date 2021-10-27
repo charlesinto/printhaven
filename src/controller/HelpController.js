@@ -16,7 +16,7 @@ class contactUsController {
             if (contactus) {
                 const mail = new MailService(
                     email,
-                    process.env.ADMIN_CONTACT_US_EMAIL,
+                    "support@splishpay.com",
                     subject,
                     "contactus",
                     {
@@ -25,7 +25,7 @@ class contactUsController {
                         email,
                     }
                 );
-                
+
                 const feedbackmail = new MailService(
                     "noreply@relationgift.com",
                     email,
