@@ -15,6 +15,20 @@ class DeliveryController {
       throw new Error(error);
     }
   }
+  static async deleteRegionById(req, res) {
+    try {
+      const { id } = req.params;
+
+      await City.destroy({ where: { regionId: id } });
+      await Region.destroy({
+        where: { id },
+        cascade: true,
+      });
+      res.status(200).send({ message: "Region deleted successfully" });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
   static async getRegions(req, res) {
     try {
       const regions = await Region.findAll({

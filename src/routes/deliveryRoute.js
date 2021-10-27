@@ -27,4 +27,11 @@ router.post(
   handleErrorAsync(DeliveryController.createCity)
 );
 
+router.delete(
+  "/admin/delete-region/:id",
+  handleErrorAsync(AuthMiddleWare.verifyToken),
+  handleErrorAsync(AuthMiddleWare.isAdmin),
+  handleErrorAsync(DeliveryController.deleteRegionById)
+);
+
 export default router;
