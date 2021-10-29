@@ -20,7 +20,7 @@ addressRouter.get(
 );
 
 addressRouter.post(
-    "/create",
+    "/delivery-addresses",
     handleErrorAsync(AuthMiddleware.verifyToken),
     handleErrorAsync(deliveryAddresSchemaValidate),
     handleErrorAsync(AddressController.createAddress)

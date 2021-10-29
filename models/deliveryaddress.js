@@ -10,6 +10,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       deliveryAddress.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
+      deliveryAddress.belongsTo(models.City, { foreignKey: 'cityId', as: 'city' });
+      deliveryAddress.belongsTo(models.Region, { foreignKey: 'regionId', as: 'region' });
+
     }
   };
 
@@ -26,13 +29,21 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    region: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    regionId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "Region",
+        key: "id",
+      },
+      allowNull: false
     },
-    city: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    cityId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "City",
+        key: "id",
+      },
+      allowNull: false
     },
     lastName: {
       type: DataTypes.STRING,
@@ -45,6 +56,14 @@ module.exports = (sequelize, DataTypes) => {
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "User",
+        key: "id",
+      },
+      allowNull: false
     },
     isDefaultAddress: {
       type: DataTypes.BOOLEAN,
