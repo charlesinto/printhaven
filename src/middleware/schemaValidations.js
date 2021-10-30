@@ -3,6 +3,7 @@ import {
   CitySchema,
   deliveryAddressSchema,
   RegionSchema,
+  UpdateRegionSchema,
 } from "../schema/deliveryAddress";
 import { editProfileSchema } from "../schema/editProfile";
 import { homePageBannerSchema } from "../schema/homePageBanner";
@@ -121,6 +122,18 @@ export const contactUsSchemaValidate = (req, res, next) => {
 export const bestSellingProductSchemaValidate = (req, res, next) => {
   try {
     const { error, value } = BestSellingProductSchema.validate(req.body);
+    if (error)
+      return res.status(409).send({ message: "Validation failed", error });
+
+    return next();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const updateRegionSchemaValidate = (req, res, next) => {
+  try {
+    const { error, value } = UpdateRegionSchema.validate(req.body);
     if (error)
       return res.status(409).send({ message: "Validation failed", error });
 

@@ -5,6 +5,7 @@ import DeliveryController from "../controller/DeliveryController";
 import {
   regionSchemaValidate,
   citySchemaValidate,
+  updateRegionSchemaValidate,
 } from "../middleware/schemaValidations";
 
 const router = Express.Router();
@@ -19,6 +20,8 @@ router.post(
 
 router.get("/get-regions", handleErrorAsync(DeliveryController.getRegions));
 
+router.get("/get-region", handleErrorAsync(DeliveryController.getRegions));
+
 router.post(
   "/admin/create-city",
   handleErrorAsync(AuthMiddleWare.verifyToken),
@@ -32,6 +35,20 @@ router.delete(
   handleErrorAsync(AuthMiddleWare.verifyToken),
   handleErrorAsync(AuthMiddleWare.isAdmin),
   handleErrorAsync(DeliveryController.deleteRegionById)
+);
+
+router.put(
+  "/admin/update-region/:id",
+  handleErrorAsync(AuthMiddleWare.verifyToken),
+  handleErrorAsync(AuthMiddleWare.isAdmin),
+  handleErrorAsync(updateRegionSchemaValidate),
+  handleErrorAsync(DeliveryController.updateRegionByID)
+);
+
+router.get(
+  "/get-region-with-cities",
+  handleErrorAsync(AuthMiddleWare.verifyToken),
+  handleErrorAsync(DeliveryController.getRegionWithCities)
 );
 
 export default router;

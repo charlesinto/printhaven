@@ -45,6 +45,66 @@ class DeliveryController {
       throw new Error(error);
     }
   }
+
+  static async getRegionWithCities(req, res) {
+    try {
+      const regions = await Region.findAll({
+        include: [{ model: City, as: "cities" }],
+      });
+      res.status(200).send({ message: "Operation successful", data: regions });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  static async updateRegionByID(req, res) {
+    try {
+      const regionId = req.params.id;
+
+      const { name, cities } = req.body;
+
+      const region = await Region.findOne({ where: { id: regionId } });
+      if (!region)
+        return res.status(404).send({ message: `No Such Region found` });
+
+      await Region.update({ name }, { where: { id: regionId } });
+
+      if (cities) {
+        const newCitiesToAdd = [];
+
+        const citiesToRemove = [];
+
+        const citiesBelongingToRegion = await City.findAll({
+          where: { regionId },
+        });
+
+        citiesBelongingToRegion.forEach((element) => {
+          if (!cities.includes(element.name)) {
+            citiesToRemove.push(element);
+          }
+        });
+
+        cities.forEach((element) => {
+          const city = citiesBelongingToRegion.find(
+            (item) => item.name.toLowerCase() === element.toLowerCase()
+          );
+          if (!city) newCitiesToAdd.push({ name: element, regionId });
+        });
+
+        await City.destroy({
+          where: {
+            id: citiesToRemove.map((item) => item.id),
+            regionId,
+          },
+        });
+
+        await City.bulkCreate(newCitiesToAdd);
+      }
+
+      res.status(201).send({ message: "Region successfully updated" });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
   static async createCity(req, res) {
     try {
       const { cities, regionId } = req.body;

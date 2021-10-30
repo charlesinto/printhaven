@@ -16,6 +16,11 @@ export const RegionSchema = Joi.object({
   name: Joi.string().required(),
 });
 
+export const UpdateRegionSchema = Joi.object({
+  name: Joi.string().required(),
+  cities: Joi.array(),
+});
+
 export const CitySchema = Joi.object({
   cities: Joi.array().items(Joi.string().required()).min(1),
   regionId: Joi.number().required(),
