@@ -255,9 +255,7 @@ class AuthController {
       });
 
       if (!App.isPasswordEqual(oldPassword, user.password))
-        return res
-          .status(404)
-          .send({ message: "invalid old password" });
+        return res.status(404).send({ message: "invalid old password" });
 
       const password = App.hashPassword(newPassword);
       await User.update({ password }, { where: { id: req.user.id } });
@@ -267,13 +265,14 @@ class AuthController {
     }
   }
 
-
   static async editProfile(req, res) {
     try {
-
       const { phoneNumber, ...rest } = req.body;
 
-      let newPhoneNumber = (phoneNumber[0] === "0") ? phoneNumber.substring(1, phoneNumber.length) : phoneNumber;
+      let newPhoneNumber =
+        phoneNumber[0] === "0"
+          ? phoneNumber.substring(1, phoneNumber.length)
+          : phoneNumber;
       await User.update(
         { phoneNumber: newPhoneNumber, ...rest },
         { where: { id: req.user.id } }
@@ -334,6 +333,23 @@ class AuthController {
     }
   }
 
+  static async getAdminProfile(req, res) {
+    try {
+      const me = await AdminUser.findOne({
+        where: { id: req.user.id },
+        attributes: { exclude: ["password"] },
+        raw: true,
+      });
+      if (!me) return res.status(404).send({ message: "User not found" });
+
+      const { password, ...rest } = me;
+
+      return res.status(200).send({ user: { ...rest } });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   static async getUserName(req, res) {
     try {
       const me = await User.findOne({
@@ -352,10 +368,6 @@ class AuthController {
       throw new Error(error);
     }
   }
-
 }
-
-
-
 
 export default AuthController;
