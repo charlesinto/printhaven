@@ -32,12 +32,20 @@ router.post(
 );
 
 router.post(
-  "/admin/get-bestselling-products",
+  "/admin/add-topselling-products",
   handleErrorAsync(AuthMiddleWare.verifyToken),
   handleErrorAsync(AuthMiddleWare.isAdmin),
   handleErrorAsync(bestSellingProductSchemaValidate),
-  handleErrorAsync(ProductController.addProductToBestSelling)
+  handleErrorAsync(ProductController.addTopSellingCategories)
 );
+
+// router.post(
+//   "/admin/get-bestselling-products",
+//   handleErrorAsync(AuthMiddleWare.verifyToken),
+//   handleErrorAsync(AuthMiddleWare.isAdmin),
+//   handleErrorAsync(bestSellingProductSchemaValidate),
+//   handleErrorAsync(ProductController.getBestSellingProducts)
+// );
 
 router.post(
   "/admin/remove-bestselling-products",
@@ -47,9 +55,22 @@ router.post(
   handleErrorAsync(ProductController.removeProductFromBestSelling)
 );
 
+router.post(
+  "/admin/remove-topselling-products",
+  handleErrorAsync(AuthMiddleWare.verifyToken),
+  handleErrorAsync(AuthMiddleWare.isAdmin),
+  handleErrorAsync(bestSellingProductSchemaValidate),
+  handleErrorAsync(ProductController.removeCategoryFromTopCategory)
+);
+
 router.get(
   "/get-bestselling-products",
   handleErrorAsync(ProductController.getBestSellingProducts)
+);
+
+router.get(
+  "/get-topselling-products",
+  handleErrorAsync(ProductController.getTopCategories)
 );
 
 export default router;

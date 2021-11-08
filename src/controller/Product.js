@@ -9,6 +9,8 @@ const {
   ProductDesciptionValue,
   SubCategory,
   BestsellingProduct,
+  TopCategories,
+  ParentCategory,
 } = db;
 
 class ProductController {
@@ -71,12 +73,49 @@ class ProductController {
     }
   }
 
+  static async addTopSellingCategories(req, res) {
+    try {
+      const payload = req.body;
+      const uniqueProducts = [];
+      for (let i = 0; i < payload.length; i++) {
+        const product = await TopCategories.findOne({
+          where: { productId: payload[i] },
+        });
+        if (!product) uniqueProducts.push(payload[i]);
+      }
+      const categoryIds = uniqueProducts.map((id) => ({
+        parentCategoryId: id,
+      }));
+
+      await TopCategories.bulkCreate(categoryIds);
+
+      res.status(200).send({ message: "Operation successful" });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   static async removeProductFromBestSelling(req, res) {
     try {
       const payload = req.body;
 
       for (let i = 0; i < payload.length; i++) {
         await BestsellingProduct.destroy({ where: { productId: payload[i] } });
+      }
+      res.status(200).send({ message: "Operation successful" });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  static async removeCategoryFromTopCategory(req, res) {
+    try {
+      const payload = req.body;
+
+      for (let i = 0; i < payload.length; i++) {
+        await TopCategories.destroy({
+          where: { parentCategoryId: payload[i] },
+        });
       }
       res.status(200).send({ message: "Operation successful" });
     } catch (error) {
@@ -92,6 +131,18 @@ class ProductController {
       res
         .status(200)
         .send({ message: "Operation successful", data: bestsellingProducts });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  static async getTopCategories(req, res) {
+    try {
+      const topCategories = await TopCategories.findAll({
+        include: [{ model: ParentCategory, as: "category" }],
+      });
+      res
+        .status(200)
+        .send({ message: "Operation successful", data: topCategories });
     } catch (error) {
       throw new Error(error);
     }

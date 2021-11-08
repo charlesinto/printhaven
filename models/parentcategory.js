@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       ParentCategory.hasMany(models.SubCategory, { as: "subCategories" });
       ParentCategory.hasMany(models.HomePageBanner, { as: "homePageBanners" });
+
+      ParentCategory.hasOne(models.TopCategories, { as: "topCategories" });
     }
   }
   ParentCategory.init(
