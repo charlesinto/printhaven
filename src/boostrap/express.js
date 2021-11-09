@@ -6,6 +6,8 @@ import advertRoute from "../routes/advertRoute";
 import wishListRoute from "../routes/wishListRoute";
 import deliveryRoute from "../routes/deliveryRoute";
 import helpRoute from "../routes/helpRoute";
+import couponRoute from "../routes/couponRoute";
+
 
 import { logger } from "../logger/winston";
 
@@ -31,6 +33,8 @@ module.exports = function () {
   app.use("/api/v1/wishlist", wishListRoute);
   app.use("/api/v1/delivery", deliveryRoute);
   app.use("/api/v1/help", helpRoute);
+  app.use("/api/v1/coupon", couponRoute);
+
 
 
   app.get("/", (req, res) => {
