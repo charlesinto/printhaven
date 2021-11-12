@@ -26,6 +26,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    usage: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    maxUsage: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     expiresAt: {
       type: DataTypes.DATE,
       allowNull: false,

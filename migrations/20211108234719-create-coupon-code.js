@@ -28,6 +28,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      usage: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      maxUsage: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       isValid: {
         type: Sequelize.BOOLEAN,
         allowNull: false,

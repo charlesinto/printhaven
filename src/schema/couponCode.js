@@ -5,7 +5,8 @@ export const couponCodeSchema = Joi.object({
     percentageDiscount: Joi.number().required(),
     maxDiscount: Joi.number().required(),
     expiresAt: Joi.date().greater('now').iso().required(),
-    minDiscount: Joi.boolean().required(),
+    minDiscount: Joi.number().required(),
+    maxUsage: Joi.number().required(),
     isValid: Joi.boolean().required(),
 
 });
