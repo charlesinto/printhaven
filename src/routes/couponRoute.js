@@ -13,7 +13,7 @@ const router = express.Router();
 router.post(
   "/create-coupon",
   handleErrorAsync(AuthMiddleWare.verifyToken),
-  // handleErrorAsync(AuthMiddleWare.isAdmin),
+  handleErrorAsync(AuthMiddleWare.isAdmin),
   handleErrorAsync(CouponCodeSchemaValidate),
   handleErrorAsync(couponCodeController.createCouponCode)
 );
@@ -21,14 +21,14 @@ router.post(
 router.delete(
   "/delete-coupon/:codeId",
   handleErrorAsync(AuthMiddleWare.verifyToken),
-  // handleErrorAsync(AuthMiddleWare.isAdmin),
+  handleErrorAsync(AuthMiddleWare.isAdmin),
   handleErrorAsync(couponCodeController.deleteCouponCode)
 );
 
 router.post(
   "/validate-coupon/:codeId",
   handleErrorAsync(AuthMiddleWare.verifyToken),
-  // handleErrorAsync(AuthMiddleWare.isAdmin),
+  handleErrorAsync(AuthMiddleWare.isAdmin),
   handleErrorAsync(activateAndDeactivateCouponchemaValidate),
   handleErrorAsync(couponCodeController.activateAndDeactivateCouponCode)
 );
@@ -36,7 +36,7 @@ router.post(
 router.put(
   "/update-coupon/:codeId",
   handleErrorAsync(AuthMiddleWare.verifyToken),
-  // handleErrorAsync(AuthMiddleWare.isAdmin),
+  handleErrorAsync(AuthMiddleWare.isAdmin),
   handleErrorAsync(CouponCodeSchemaValidate),
   handleErrorAsync(couponCodeController.updateCouponCode)
 );
@@ -44,14 +44,14 @@ router.put(
 router.get(
   "/get-coupon",
   handleErrorAsync(AuthMiddleWare.verifyToken),
-  // handleErrorAsync(AuthMiddleWare.isAdmin),
+  handleErrorAsync(AuthMiddleWare.isAdmin),
   handleErrorAsync(couponCodeController.getAllCouponCode)
 );
 
 router.get(
   "/get-coupon/:codeId",
   handleErrorAsync(AuthMiddleWare.verifyToken),
-  // handleErrorAsync(AuthMiddleWare.isAdmin),
+  handleErrorAsync(AuthMiddleWare.isAdmin),
   handleErrorAsync(couponCodeController.getCouponCode)
 );
 
