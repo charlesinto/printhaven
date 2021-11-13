@@ -15,3 +15,9 @@ export const activateAndDeactivateCouponCodeSchema = Joi.object({
     isValid: Joi.boolean().required(),
 });
 
+export const applyCouponCodeCouponCodeSchema = Joi.object({
+    totalPrice: Joi.number().required(),
+    code: Joi.string().required()
+
+});
+

@@ -8,9 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      Code: {
+      code: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true,
       },
       percentageDiscount: {
         type: Sequelize.INTEGER,

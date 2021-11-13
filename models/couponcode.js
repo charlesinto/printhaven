@@ -14,9 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   couponCode.init({
-    Code: {
+    code: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     percentageDiscount: {
       type: DataTypes.INTEGER,

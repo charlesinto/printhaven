@@ -1,4 +1,5 @@
 import db from "../../models";
+import App from "../helpers";
 
 const { couponCode } = db;
 
@@ -76,6 +77,37 @@ class couponCodeController {
                 ...rest,
             }, { where: { id }, returning: true });
             return res.status(200).send({ message: "record updated Successful" });
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    static async applyCouponCode(req, res) {
+        try {
+            const { code, totalPrice } = req.body;
+            const codeExist = await couponCode.findOne({ where: { code } });
+            if (!codeExist)
+                return res.status(404).send({ message: "Code Not Found'" })
+            const {
+                maxDiscount, expiresAt,
+                usage, isValid, minDiscount,
+                percentageDiscount, maxUsage
+            } = codeExist
+            const discount = App.discount(percentageDiscount, totalPrice)
+            const codeExpired = App.checkExpirationTime(expiresAt)
+            if (!isValid)
+                return res.status(403).send({ message: "Invalid Code" })
+            if (codeExpired)
+                return res.status(200).send({ message: "Code Expired" })
+            if (usage == maxUsage)
+                return res.status(200).send({ message: "usage limit exceeded" })
+            if (discount < minDiscount)
+                return res.status(200).send({ message: "Successful", discount: 0 })
+            if (discount >= maxDiscount)
+                return res.status(200).send({ message: "Successful", discount: maxDiscount })
+            if (discount >= minDiscount && discount < maxDiscount)
+                return res.status(200).send({ message: "Successful", discount })
+
         } catch (error) {
             throw new Error(error);
         }
