@@ -51,7 +51,7 @@ class contactUsController {
         try {
             const contactus = await contactUs.findAll({});
             if (!contactus.length)
-                return res.status(409).send({ message: "No contact Us records" });
+                return res.status(200).send({ message: "No contact Us records", contactus: [] });
             return res.status(200).send({ message: "Successful", contactus });
         } catch (error) {
             throw new Error(error);
@@ -65,7 +65,7 @@ class contactUsController {
                 where: { id }
             });
             if (!contactus)
-                return res.status(409).send({ message: "No such contactUs id" });
+                return res.status(200).send({ message: "No such contactUs id", contactus: [] });
             return res.status(200).send({ message: "Successful", contactus });
         } catch (error) {
             throw new Error(error);
