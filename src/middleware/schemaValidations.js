@@ -14,6 +14,11 @@ import { homePageBannerSchema } from "../schema/homePageBanner";
 import { wishListSchema } from "../schema/wishList";
 import { changePasswordSchema } from "../schema/changePassword";
 import { contactUsSchema } from "../schema/contactUs";
+import {
+  couponCodeSchema,
+  activateAndDeactivateCouponCodeSchema,
+  applyCouponCodeCouponCodeSchema,
+} from "../schema/couponCode";
 
 export const ProductSchemaValidate = (req, res, next) => {
   try {
@@ -150,6 +155,45 @@ export const updateRegionSchemaValidate = (req, res, next) => {
 export const createDealsOfDaySchema = (req, res, next) => {
   try {
     const { error, value } = DealsOfDaySchema.validate(req.body);
+    if (error)
+      return res.status(409).send({ message: "Validation failed", error });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+export const CouponCodeSchemaValidate = (req, res, next) => {
+  try {
+    const { error, value } = couponCodeSchema.validate(req.body);
+    if (error)
+      return res.status(409).send({ message: "Validation failed", error });
+
+    return next();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const activateAndDeactivateCouponchemaValidate = (req, res, next) => {
+  try {
+    const { error, value } = activateAndDeactivateCouponCodeSchema.validate(
+      req.body
+    );
+    if (error)
+      return res.status(409).send({ message: "Validation failed", error });
+
+    return next();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const applyCouponCodeCouponCodeSchemachemaValidate = (
+  req,
+  res,
+  next
+) => {
+  try {
+    const { error, value } = applyCouponCodeCouponCodeSchema.validate(req.body);
     if (error)
       return res.status(409).send({ message: "Validation failed", error });
 

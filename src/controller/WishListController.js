@@ -34,7 +34,7 @@ class WishListController {
                 include: "product",
             });
             if (!WishList.length)
-                return res.status(409).send({ message: "User has no WishList records" });
+                return res.status(200).send({ message: "User has no WishList records", WishList: [] });
             return res.status(200).send({ message: "Successful", WishList });
         } catch (error) {
             throw new Error(error);

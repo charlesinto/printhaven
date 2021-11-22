@@ -35,6 +35,31 @@ class App {
       }
     });
   }
+
+  static checkExpirationTime(expirationTime) {
+
+    const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+    const currentTime = (new Date(Date.now() - tzoffset)).toISOString();
+
+    try {
+      if (new Date(currentTime).getTime() >= new Date(expirationTime).getTime())
+        return true
+      return false
+    } catch (er) {
+      throw new Error(er);
+
+    }
+
+  }
+
+  static discount(percentageDiscount, totalPrice) {
+
+    try {
+      return percentageDiscount * totalPrice * 0.01
+    } catch (er) {
+      throw new Error(er);
+    }
+  }
 }
 
 export default App;

@@ -10,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Region.hasMany(models.City, { as: "cities" });
+      Region.hasMany(models.deliveryAddress, { foreignKey: 'regionId' })
+
     }
   }
   Region.init(
