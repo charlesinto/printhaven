@@ -11,6 +11,8 @@ const {
   BestsellingProduct,
   TopCategories,
   ParentCategory,
+  DealsOfDay,
+  DealsOfDayProduct,
 } = db;
 
 class ProductController {
@@ -118,6 +120,26 @@ class ProductController {
         });
       }
       res.status(200).send({ message: "Operation successful" });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  static async createDealsOfDay(req, res) {
+    try {
+      const { products, startDate, endDate, percentageDiscount, ...rest } =
+        req.body;
+      const deal = await DealsOfDay.create(
+        { startDate, endDate, percentageDiscount, ...rest },
+        { raw: true }
+      );
+      const productIds = products.map((id) => ({
+        productId: id,
+        dealId: deal.id,
+      }));
+      await DealsOfDayProduct.bulkCreate(productIds);
+
+      res.status(201).send({ message: "Operation successful" });
     } catch (error) {
       throw new Error(error);
     }

@@ -4,6 +4,7 @@ import AuthMiddleWare from "../middleware/AuthMiddleware";
 import { handleErrorAsync } from "../middleware/ErrorHandler";
 import {
   bestSellingProductSchemaValidate,
+  createDealsOfDaySchema,
   ProductSchemaValidate,
 } from "../middleware/schemaValidations";
 const router = express.Router();
@@ -53,6 +54,14 @@ router.post(
   handleErrorAsync(AuthMiddleWare.isAdmin),
   handleErrorAsync(bestSellingProductSchemaValidate),
   handleErrorAsync(ProductController.removeProductFromBestSelling)
+);
+
+router.post(
+  "/admin/create-deals-of-day",
+  handleErrorAsync(AuthMiddleWare.verifyToken),
+  handleErrorAsync(AuthMiddleWare.isAdmin),
+  handleErrorAsync(createDealsOfDaySchema),
+  handleErrorAsync(ProductController.createDealsOfDay)
 );
 
 router.post(

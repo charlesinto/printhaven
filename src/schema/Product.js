@@ -26,3 +26,11 @@ export const ProductSchema = Joi.object({
 });
 
 export const BestSellingProductSchema = Joi.array().items(Joi.number());
+
+export const DealsOfDaySchema = Joi.object({
+  products: Joi.array().items(Joi.number()).required(),
+  startDate: Joi.date().required(),
+  endDate: Joi.date().required(),
+  percentageDiscount: Joi.string().required(),
+  name: Joi.string(),
+});

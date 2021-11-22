@@ -1,4 +1,8 @@
-import { BestSellingProductSchema, ProductSchema } from "../schema/Product";
+import {
+  BestSellingProductSchema,
+  DealsOfDaySchema,
+  ProductSchema,
+} from "../schema/Product";
 import {
   CitySchema,
   deliveryAddressSchema,
@@ -134,6 +138,18 @@ export const bestSellingProductSchemaValidate = (req, res, next) => {
 export const updateRegionSchemaValidate = (req, res, next) => {
   try {
     const { error, value } = UpdateRegionSchema.validate(req.body);
+    if (error)
+      return res.status(409).send({ message: "Validation failed", error });
+
+    return next();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const createDealsOfDaySchema = (req, res, next) => {
+  try {
+    const { error, value } = DealsOfDaySchema.validate(req.body);
     if (error)
       return res.status(409).send({ message: "Validation failed", error });
 
